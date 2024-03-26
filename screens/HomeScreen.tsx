@@ -5,8 +5,10 @@ import {
   ActivityIndicator,
   StyleSheet,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import * as Location from "expo-location";
+import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import { Stack } from "expo-router";
 import LottieView from "lottie-react-native";
@@ -52,6 +54,8 @@ export default function HomeScreen() {
   const [errorMsg, setErrorMsg] = useState("");
   const [weather, setWeather] = useState<Weather>();
   const [forecast, setForecast] = useState<WeatherForecast[]>();
+  const [showSearch, setShowSearch] = useState<any>(false);
+  const [isLocations, setLocations] = useState<any>([1, 2, 3]);
 
   useEffect(() => {
     if (location) {
@@ -116,13 +120,31 @@ export default function HomeScreen() {
       />
       <View
         className="flex-row justify-end items-center rounded-full mt-10"
-        style={{ backgroundColor: "gray" }}
+        style={{ backgroundColor: showSearch ? "gray" : "transparent" }}
       >
-        <TextInput
-          placeholder="Chọn thành phố"
-          placeholderTextColor={"lightgray"}
-        ></TextInput>
+        {showSearch ? (
+          <TextInput
+            placeholder="Nhập tên thành phố..."
+            placeholderTextColor={"lightgray"}
+            className="pl-6 h-10 flex-1 text-base text-white"
+          ></TextInput>
+        ) : null}
+
+        <TouchableOpacity
+          onPress={() => setShowSearch(!showSearch)}
+          style={{ backgroundColor: "gray" }}
+          className="rounded-full p-3 m-1"
+        >
+          <MagnifyingGlassIcon size={25} color="white" />
+        </TouchableOpacity>
       </View>
+      {isLocations.length > 0 && showSearch ? (
+        <View className="absolute w-full bg-gray-300 top-16 rounded-3xl">
+          {isLocations.map((loc, index) => {
+            return <TouchableOpacity />;
+          })}
+        </View>
+      ) : null}
 
       {/* <Stack.Screen options={{ headerShown: false }} /> */}
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
