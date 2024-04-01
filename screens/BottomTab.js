@@ -70,25 +70,3 @@ export default function BottomTab() {
     </Tab.Navigator>
   );
 }
-
-// export default function BottomTab() {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen
-//         name="Home"
-//         component={Home}
-//         options={{
-//           title: "My home",
-//           headerStyle: {
-//             backgroundColor: "#f4511e",
-//           },
-//           headerTintColor: "#fff",
-//           headerTitleStyle: {
-//             fontWeight: "bold",
-//           },
-//         }}
-//       />
-//       <Tab.Screen name="Settings" component={Setting} />
-//     </Tab.Navigator>
-//   );
-// }

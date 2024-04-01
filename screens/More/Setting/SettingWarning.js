@@ -69,8 +69,8 @@ export default function SettingWarning({ navigation }) {
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
         /> */}
+        {/* <SettingWarningItem text={data[0].title} /> */}
       </View>
-
       <View>
         <Item text="Đánh giá chúng tôi" />
         <Item text="Chính sách q.riêng tư" />
@@ -79,14 +79,6 @@ export default function SettingWarning({ navigation }) {
     </View>
   );
 }
-
-// export default SettingWarning = () => {
-//   return (
-//     <View>
-//       <Text>Settig warning</Text>
-//     </View>
-//   );
-// };
 
 const styles = StyleSheet.create({
   rowItem: {
