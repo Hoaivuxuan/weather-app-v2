@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTab from "./screens/BottomTab";
+// import HomeScreen from "./screens/HomeScreen";
 
 export default function App() {
   return (
@@ -12,7 +13,6 @@ export default function App() {
         <BottomTab />
       </NavigationContainer>
     </GestureHandlerRootView>
-    // <StatusBar style="auto" />
   );
 }
 

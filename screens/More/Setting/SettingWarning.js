@@ -63,13 +63,12 @@ export default function SettingWarning({ navigation }) {
             Cài đặt cảnh cáo
           </Text>
         </View>
-        {/* <DraggableFlatList
+        <DraggableFlatList
           data={data}
           onDragEnd={({ data }) => setData(data)}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-        /> */}
-        {/* <SettingWarningItem text={data[0].title} /> */}
+        />
       </View>
       <View>
         <Item text="Đánh giá chúng tôi" />
