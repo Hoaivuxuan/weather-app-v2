@@ -4,9 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SettingWarning from "./SettingWarning";
 import MeasureBadWeather from "../MoreInfo/MeasureBadWeather";
-import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
+import {
+  MagnifyingGlassIcon,
+  BeakerIcon,
+  BellAlertIcon,
+  ExclamationTriangleIcon,
+} from "react-native-heroicons/outline";
 // import { IconNotification, IconWarning } from "../../../utils/Icon";
-
 const SettingsStack = createNativeStackNavigator();
 
 function Item({ text, icon }) {
@@ -65,7 +69,7 @@ function SettingsScreen({ navigation }) {
                 setSetting(false), setThongBao(true);
               }}
               text="Thông báo"
-              icon={<MagnifyingGlassIcon size={25} color="white" />}
+              icon={<BellAlertIcon size={25} color="white" />}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -76,7 +80,7 @@ function SettingsScreen({ navigation }) {
           >
             <Item
               text="Cài đặt cảnh báo."
-              icon={<MagnifyingGlassIcon size={25} color="white" />}
+              icon={<ExclamationTriangleIcon size={25} color="white" />}
               // icon={<IconNotification color={"white"} />}
             />
             {/* <IconWarning color={"white"} /> */}
