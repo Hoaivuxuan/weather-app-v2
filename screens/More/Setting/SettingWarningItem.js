@@ -1,8 +1,9 @@
 import { View, Text, Switch } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getItem, setItem } from "../../../src/common/localStorage";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-const SettingWarningItem = ({ text }) => {
+const SettingWarningItem = ({ text, icon }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = async () => {
     try {
@@ -27,7 +28,16 @@ const SettingWarningItem = ({ text }) => {
         margin: 10,
       }}
     >
-      <View>
+      <View style={{ marginLeft: 40 }}>
+        <Text
+          style={{
+            position: "absolute",
+            marginLeft: -35,
+            marginTop: -3,
+          }}
+        >
+          <Ionicons name={icon} size={24} color="white" />
+        </Text>
         <Text
           onPress={() => navigation.navigate("Home")}
           style={{ color: "white" }}
@@ -35,7 +45,7 @@ const SettingWarningItem = ({ text }) => {
           {text}
         </Text>
       </View>
-      <View style={{ marginTop: -20 }}>
+      <View style={{ marginTop: -30 }}>
         <Switch
           trackColor={{ false: "#767577", true: "#81b0ff" }}
           thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}

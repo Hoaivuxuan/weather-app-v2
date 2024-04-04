@@ -33,7 +33,7 @@ export default function BottomTab() {
           return <MagnifyingGlassIcon size={25} color="white" />;
           // return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "tomato",
+        tabBarActiveTintColor: "#62B8F6",
         tabBarInactiveTintColor: "gray",
       })}
     >
@@ -52,19 +52,21 @@ export default function BottomTab() {
               }}
             ></View>;
           },
-          // tabBarIcon: ({ color, size }) => (
-          //   <Icon name="home" color={color} size={size} />
-          // ),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+            // <ion-icon name="home-outline"></ion-icon>
+            // <Icon name="home" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
         name="Thiết lập"
         component={Setting}
         options={{
-          tabBarLabel: "Thêm",
-          // tabBarIcon: ({ color, size }) => (
-          //   <MaterialCommunityIcons name="account" color={color} size={size} />
-          // ),
+          tabBarLabel: "Khác",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="grid-outline" size={size} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>
