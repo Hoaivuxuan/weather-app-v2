@@ -4,13 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SettingWarning from "./SettingWarning";
 import MeasureBadWeather from "../MoreInfo/MeasureBadWeather";
-import {
-  MagnifyingGlassIcon,
-  BeakerIcon,
-  BellAlertIcon,
-  ExclamationTriangleIcon,
-} from "react-native-heroicons/outline";
-// import { IconNotification, IconWarning } from "../../../utils/Icon";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Footer from "../../Footer";
 const SettingsStack = createNativeStackNavigator();
 
 function Item({ text, icon }) {
@@ -28,7 +23,7 @@ function Item({ text, icon }) {
         style={{
           position: "absolute",
           marginLeft: -35,
-          marginTop: -5,
+          marginTop: -3,
         }}
       >
         {icon}
@@ -47,7 +42,7 @@ function SettingsScreen({ navigation }) {
         flex: 1,
         justifyContent: "space-between",
         // alignItems: 'center',
-        backgroundColor: "#6390F0",
+        backgroundColor: "#0D91F0",
       }}
     >
       <View>
@@ -60,7 +55,13 @@ function SettingsScreen({ navigation }) {
         </View>
 
         <View>
-          <View>
+          <View
+            style={{
+              backgroundColor: "#70A3C8",
+              width: "100%",
+              height: "auto",
+            }}
+          >
             <Text style={styles.subHeader}>Cài đặt chung</Text>
           </View>
           <TouchableOpacity>
@@ -69,47 +70,64 @@ function SettingsScreen({ navigation }) {
                 setSetting(false), setThongBao(true);
               }}
               text="Thông báo"
-              icon={<BellAlertIcon size={25} color="white" />}
+              icon={
+                <Ionicons
+                  name="notifications-outline"
+                  size={24}
+                  color="white"
+                />
+              }
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              console.log("annnn");
+              // console.log("annnn");
               navigation.navigate(SettingWarning);
             }}
           >
             <Item
-              text="Cài đặt cảnh báo."
-              icon={<ExclamationTriangleIcon size={25} color="white" />}
-              // icon={<IconNotification color={"white"} />}
+              text="Cài đặt cảnh báo"
+              icon={<Ionicons name="warning-outline" size={24} color="white" />}
             />
-            {/* <IconWarning color={"white"} /> */}
           </TouchableOpacity>
-          <Item text="Thời tiết hàng ngày" />
-
-          <Item text="Chủ đề" />
+          <Item
+            text="Thời tiết hàng ngày"
+            icon={
+              <Ionicons name="volume-low-outline" size={28} color="white" />
+            }
+          />
+          <Item
+            text="Chủ đề"
+            icon={
+              <Ionicons name="color-palette-outline" size={24} color="white" />
+            }
+          />
         </View>
 
         <View>
-          <Text style={styles.subHeader}>Thông tin thêm</Text>
+          <View
+            style={{
+              backgroundColor: "#70A3C8",
+              width: "100%",
+              // opacity: 0.5,
+            }}
+          >
+            <Text style={styles.subHeader}>Thông tin thêm</Text>
+          </View>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(MeasureBadWeather);
             }}
           >
-            <Item text="HD ứng phó thời tiết xấu" />
+            <Item
+              text="HD ứng phó thời tiết xấu"
+              icon={<Ionicons name="book-outline" size={24} color="white" />}
+            />
           </TouchableOpacity>
         </View>
       </View>
 
-      <View>
-        <View>
-          <Text style={styles.subHeader}>Công cụ khác</Text>
-        </View>
-        <Item text="Đánh giá chúng tôi" />
-        <Item text="Chính sách q.riêng tư" />
-        <Item text="Chia sẽ với bạn bè" />
-      </View>
+      <Footer />
     </View>
   );
 }
@@ -139,22 +157,11 @@ export default function Setting() {
 
 const styles = StyleSheet.create({
   subHeader: {
-    marginLeft: 10,
+    marginLeft: 16,
     marginBottom: -10,
     fontSize: 16,
     fontWeight: "500",
+    height: 36,
+    color: "white",
   },
 });
-
-// import { View, Text } from "react-native";
-// import React from "react";
-
-// const Setting = () => {
-//   return (
-//     <View>
-//       <Text>Settingg</Text>
-//     </View>
-//   );
-// };
-
-// export default Setting;

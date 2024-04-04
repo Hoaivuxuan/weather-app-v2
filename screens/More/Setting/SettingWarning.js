@@ -6,8 +6,9 @@ import DraggableFlatList, {
   ScaleDecorator,
 } from "react-native-draggable-flatlist";
 import { MeasureData } from "../../../src/common/dataWarn";
+import Footer from "../../Footer";
 
-function Item({ text, handle }) {
+function Item({ text, icon }) {
   const navigation = useNavigation();
   return (
     <View
@@ -15,6 +16,15 @@ function Item({ text, handle }) {
         margin: 15,
       }}
     >
+      <Text
+        style={{
+          position: "absolute",
+          marginLeft: -35,
+          marginTop: -3,
+        }}
+      >
+        {icon}
+      </Text>
       <Text
         onPress={() => navigation.navigate("Home")}
         style={{ color: "white" }}
@@ -35,7 +45,7 @@ export default function SettingWarning({ navigation }) {
           disabled={isActive}
           style={[{ backgroundColor: isActive ? "red" : item.backgroundColor }]}
         >
-          <SettingWarningItem text={item.title} />
+          <SettingWarningItem text={item.title} icon={item.nameIcon} />
         </TouchableOpacity>
       </ScaleDecorator>
     );
@@ -46,7 +56,7 @@ export default function SettingWarning({ navigation }) {
         flex: 1,
         justifyContent: "space-between",
         // alignItems: 'center',
-        backgroundColor: "#6390F0",
+        backgroundColor: "#0D91F0",
       }}
     >
       <View>
@@ -62,6 +72,16 @@ export default function SettingWarning({ navigation }) {
           >
             Cài đặt cảnh cáo
           </Text>
+          <Text
+            style={{
+              color: "white",
+              alignItems: "center",
+              opacity: 0.8,
+              marginTop: 10,
+            }}
+          >
+            Kéo thả để sắp xếp mức độ ưu tiên và on/off cảnh báo muốn nhận
+          </Text>
         </View>
         <DraggableFlatList
           data={data}
@@ -70,26 +90,7 @@ export default function SettingWarning({ navigation }) {
           renderItem={renderItem}
         />
       </View>
-      <View>
-        <Item text="Đánh giá chúng tôi" />
-        <Item text="Chính sách q.riêng tư" />
-        <Item text="Chia sẽ với bạn bè" />
-      </View>
+      <Footer />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  rowItem: {
-    height: 100,
-    width: 2000,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-});
