@@ -15,6 +15,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@types/react": "~18.2.45",
+    "axios": "^1.6.8",
     "expo": "~50.0.14",
     "expo-blur": "^12.9.2",
     "expo-location": "^16.5.5",
@@ -31,9 +32,9 @@
     "react-native-reanimated": "~3.6.2",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "^3.29.0",
+    "react-native-svg": "14.1.0",
     "react-native-vector-icons": "^10.0.3",
-    "typescript": "^5.3.0",
-    "react-native-svg": "14.1.0"
+    "typescript": "^5.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

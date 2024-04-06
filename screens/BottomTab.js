@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./HomeScreen";
+import HomeScreen from "./HomeScreen/HomeScreen";
 import Setting from "./More/Setting/Setting";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MagnifyingGlassIcon } from "react-native-heroicons/outline";

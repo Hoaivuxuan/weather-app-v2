@@ -14,6 +14,7 @@ import { Stack } from "expo-router";
 import LottieView from "lottie-react-native";
 import { StatusBar } from "expo-status-bar";
 import ForecastItem from "./ForecastItem";
+import { getForecast, getWeather } from "../../services/HomeScreenService";
 //
 const BASE_URL = `https://api.openweathermap.org/data/2.5`;
 const OPEN_WEATHER_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_KEY;
@@ -84,11 +85,12 @@ export default function HomeScreen() {
     // const results = await fetch(
     //   `${BASE_URL}/weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${OPEN_WEATHER_KEY}&units=metric`
     // );
-    const results = await fetch(
-      `${BASE_URL}/weather?lat=21.0278&lon=105.8342&appid=25a2a38b0f35a8bd76c2f1cff5ad7eb7&units=metric`
-    );
-    const data = await results.json();
-    setWeather(data);
+    // const results = await fetch(
+    //   `${BASE_URL}/weather?lat=21.0278&lon=105.8342&appid=25a2a38b0f35a8bd76c2f1cff5ad7eb7&units=metric`
+    // );
+    // const data = await results.json();
+    const results = await getWeather(21.0278, 105.8342);
+    setWeather(results);
   };
 
   const fetchForecast = async () => {
@@ -100,11 +102,12 @@ export default function HomeScreen() {
     // const results = await fetch(
     //   `${BASE_URL}/forecast?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${OPEN_WEATHER_KEY}&units=metric`
     // );
-    const results = await fetch(
-      `${BASE_URL}/forecast?lat=21.0278&lon=105.8342&appid=25a2a38b0f35a8bd76c2f1cff5ad7eb7&units=metric`
-    );
-    const data = await results.json();
-    setForecast(data.list);
+    // const results = await fetch(
+    //   `${BASE_URL}/forecast?lat=21.0278&lon=105.8342&appid=25a2a38b0f35a8bd76c2f1cff5ad7eb7&units=metric`
+    // );
+    // const data = await results.json();
+    const results = await getForecast(21.0278, 105.8342);
+    setForecast(results);
   };
 
   if (!weather) {
@@ -151,8 +154,8 @@ export default function HomeScreen() {
         <LottieView
           source={
             weather.weather[0].main === "Rain"
-              ? require("../assets/lottie/rain_v1.json")
-              : require("../assets/lottie/sunny.json")
+              ? require("../../assets/lottie/rain_v1.json")
+              : require("../../assets/lottie/sunny.json")
           }
           style={{
             width: 200,
@@ -181,6 +184,22 @@ export default function HomeScreen() {
         }}
         renderItem={({ item }) => <ForecastItem forecast={item} />}
       />
+
+      {/* <FlatList
+        data={forecast}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{
+          flexGrow: 0,
+          height: 150,
+          marginBottom: 40,
+        }}
+        contentContainerStyle={{
+          gap: 10,
+          paddingHorizontal: 10,
+        }}
+        renderItem={({ item }) => <ForecastItem forecast={item} />}
+      /> */}
 
       <StatusBar style="light" />
     </ImageBackground>
