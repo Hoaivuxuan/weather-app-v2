@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">weather-app-v2</string>
+  <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
+  <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="widget_shopify_description" translatable="false">Get quick access to your store\'s performance</string>
+  <string name="widget_smallweather_description" translatable="false">Something</string>
+</resources>

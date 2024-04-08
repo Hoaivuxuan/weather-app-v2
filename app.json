@@ -21,10 +21,44 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.weatherappv2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-dev-launcher"
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "fonts": [
+            "./assets/fonts/material.ttf",
+            "./assets/fonts/material_outlined.otf",
+            "./assets/fonts/Ndot-55.otf"
+          ],
+          "widgets": [
+            {
+              "name": "Shopify",
+              "label": "Shopify Insights",
+              "minWidth": "300dp",
+              "minHeight": "200dp",
+              "description": "Get quick access to your store's performance",
+              "previewImage": "./assets/widget-preview/shopify_preview.png"
+            },
+            {
+              "name": "SmallWeather",
+              "label": "Weather Today",
+              "minWidth": "300dp",
+              "minHeight": "200dp",
+              "description": "Something",
+              "previewImage": "./assets/widget-preview/small_weather_preview.png"
+            }
+          ]
+        }
+      ]
+    ]
   }
 }
