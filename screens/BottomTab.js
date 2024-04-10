@@ -7,6 +7,7 @@ import HomeScreen from './HomeScreen/HomeScreen';
 import Setting from './More/Setting/Setting';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {MagnifyingGlassIcon} from 'react-native-heroicons/outline';
+import MyStack from './MyStack';
 const Tab = createBottomTabNavigator();
 
 // function Setting() {
@@ -40,7 +41,7 @@ export default function BottomTab() {
          <Tab.Screen
             name='Thời tiết'
             style={{justifyContent: 'center', alignItems: 'center'}}
-            component={HomeScreen}
+            component={MyStack}
             options={{
                tabBarLabel: 'Trang chủ',
                tabBarIcon: ({focus}) => {

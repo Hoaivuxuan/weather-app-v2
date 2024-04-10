@@ -15,13 +15,10 @@ import {
 const openWeatherKey = '1f996ca44bb1065c2e4accefe9dfb967';
 import * as Location from 'expo-location';
 import {getWeather} from '../../services/HomeScreenService';
-
-const HomeScreen = () => {
-   const [city, setCity] = useState('Seoul');
+import LocationScreen from './LocationScreen';
+const HomeScreen = ({navigation, city = 'London', setCity}) => {
    const [weatherData, setWeatherData] = useState({});
    const [forecastData, setForecastData] = useState([]);
-   const [openPopup, setOpenPopup] = useState(false);
-
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
@@ -47,12 +44,7 @@ const HomeScreen = () => {
    }, [city]);
    let lat = 21.0278;
    let lon = 105.8342;
-   const handleOpenPopup = () => {
-      setOpenPopup(true);
-   };
-   const handleNavigateSetting = () => {
-      setOpenPopup(false);
-   };
+
    const dates = Date().split(' ');
 
    //permission
@@ -62,16 +54,22 @@ const HomeScreen = () => {
          return;
       }
       let location = await Location.getCurrentPositionAsync({});
-      console.log('location', location);
+      // console.log('location', location);
       const latitude = lat;
       const longtitude = lon;
-      const results = await getWeather(latitude, longtitude);
-      setCity(results.name);
-   };
+      console.log('latitude', latitude);
+      console.log('longtitude', longtitude);
 
+      const results = await getWeather(latitude, longtitude);
+      if (results.cod == 200) {
+         console.log('results', results.name);
+         setCity(results.name);
+      }
+   };
    const handleNavigate = () => {
-      //  navigation.navigate('Location');
-      //  requestLocationPermission();
+      navigation.navigate(LocationScreen);
+   };
+   const handleGetCurrentLocation = () => {
       getLocation();
    };
    return (
@@ -85,18 +83,13 @@ const HomeScreen = () => {
                            <Image source={require('../../assets/akar-icons_plus.png')}></Image>
                         </TouchableOpacity>
                      </View>
-                     <Text style={styles.title}>{weatherData?.name}</Text>
+                     <TouchableOpacity onPress={handleGetCurrentLocation}>
+                        <Text style={styles.title}>{weatherData?.name}</Text>
+                     </TouchableOpacity>
                      <View style={{position: 'relative'}}>
-                        <TouchableOpacity onPress={handleOpenPopup}>
+                        <TouchableOpacity>
                            <Image source={require('../../assets/carbon_overflow-menu-vertical.png')}></Image>
                         </TouchableOpacity>
-                        {openPopup && (
-                           <TouchableOpacity onPress={handleNavigateSetting} style={styles.setting}>
-                              <View>
-                                 <Text style={{fontSize: 16}}>Setting</Text>
-                              </View>
-                           </TouchableOpacity>
-                        )}
                      </View>
                   </View>
 
