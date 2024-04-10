@@ -10,19 +10,18 @@ import {
    StyleSheet,
    Dimensions,
    FlatList,
-   Button,
    ScrollView,
-   PermissionsAndroid,
-   Linking,
 } from 'react-native';
 const openWeatherKey = '1f996ca44bb1065c2e4accefe9dfb967';
-// import GetLocation from 'react-native-get-location';
+import * as Location from 'expo-location';
+import {getWeather} from '../../services/HomeScreenService';
+
 const HomeScreen = () => {
-   const [city, setCity] = useState('Hanoi');
+   const [city, setCity] = useState('Seoul');
    const [weatherData, setWeatherData] = useState({});
    const [forecastData, setForecastData] = useState([]);
    const [openPopup, setOpenPopup] = useState(false);
-   const [permissionGranter, setPermissionGranter] = useState(false);
+
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
@@ -46,10 +45,8 @@ const HomeScreen = () => {
       };
       fetchWeatherData();
    }, [city]);
-   const handleNavigate = () => {
-      //  navigation.navigate('Location');
-      //  requestLocationPermission();
-   };
+   let lat = 21.0278;
+   let lon = 105.8342;
    const handleOpenPopup = () => {
       setOpenPopup(true);
    };
@@ -59,61 +56,24 @@ const HomeScreen = () => {
    const dates = Date().split(' ');
 
    //permission
+   const getLocation = async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+         return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      console.log('location', location);
+      const latitude = lat;
+      const longtitude = lon;
+      const results = await getWeather(latitude, longtitude);
+      setCity(results.name);
+   };
 
-   // async function _getLocationPermission(params) {
-   //    try {
-   //       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, {
-   //          title: 'Location Permission',
-   //          message: 'Please allow Location Permissions to continue...',
-   //          buttonNeutral: 'Ask Me Later',
-   //          buttonNegative: 'Cancel',
-   //          buttonPositive: 'OK',
-   //       });
-   //       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-   //          //   setPermissionGranter(true);
-   //          _getCurrentLocation();
-   //       } else {
-   //          console.log('Camera permission denied');
-   //       }
-   //    } catch (err) {
-   //       console.warn(err);
-   //    }
-   // }
-   // function _getCurrentLocation(params) {
-   //    GetLocation.getCurrentPosition({
-   //       enableHighAccuracy: true,
-   //       timeout: 60000,
-   //    })
-   //       .then((location) => {
-   //          console.log(location);
-   //       })
-   //       .catch((error) => {
-   //          const {code, message} = error;
-   //          console.warn(code, message);
-   //       });
-   // }
-   // const getLocation = () => {
-   //    _getLocationPermission();
-   // };
-   // const apiKey = 'AIzaSyBIzOeC1KdWOR5aCW8TPmKHGfvnFopn33M';
-   // var pos = {
-   //    lat: 40.7809261,
-   //    lng: -73.9637594,
-   // };
-
-   // Geocoder.geocodePosition(pos)
-   //    .then((res) => {
-   //       alert(res[0].formattedAddress);
-   //    })
-   //    .catch((error) => alert(error));
-   // if (!permissionGranter) {
-   //    return (
-   //       <TouchableOpacity onPress={getLocation}>
-   //          <Text>Please allow Location Permissions</Text>
-   //       </TouchableOpacity>
-   //    );
-   // }
-
+   const handleNavigate = () => {
+      //  navigation.navigate('Location');
+      //  requestLocationPermission();
+      getLocation();
+   };
    return (
       <SafeAreaView style={styles.container}>
          <ScrollView>
