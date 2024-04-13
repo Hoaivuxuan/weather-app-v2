@@ -10,19 +10,15 @@ import {
    StyleSheet,
    Dimensions,
    FlatList,
-   Button,
    ScrollView,
-   PermissionsAndroid,
-   Linking,
 } from 'react-native';
 const openWeatherKey = '1f996ca44bb1065c2e4accefe9dfb967';
-// import GetLocation from 'react-native-get-location';
-const HomeScreen = () => {
-   const [city, setCity] = useState('Hanoi');
+import * as Location from 'expo-location';
+import {getWeather} from '../../services/HomeScreenService';
+import LocationScreen from './LocationScreen';
+const HomeScreen = ({navigation, city = 'London', setCity}) => {
    const [weatherData, setWeatherData] = useState({});
    const [forecastData, setForecastData] = useState([]);
-   const [openPopup, setOpenPopup] = useState(false);
-   const [permissionGranter, setPermissionGranter] = useState(false);
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
@@ -46,74 +42,36 @@ const HomeScreen = () => {
       };
       fetchWeatherData();
    }, [city]);
-   const handleNavigate = () => {
-      //  navigation.navigate('Location');
-      //  requestLocationPermission();
-   };
-   const handleOpenPopup = () => {
-      setOpenPopup(true);
-   };
-   const handleNavigateSetting = () => {
-      setOpenPopup(false);
-   };
+   let lat = 21.0278;
+   let lon = 105.8342;
+
    const dates = Date().split(' ');
 
    //permission
+   const getLocation = async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+         return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      // console.log('location', location);
+      const latitude = lat;
+      const longtitude = lon;
+      console.log('latitude', latitude);
+      console.log('longtitude', longtitude);
 
-   // async function _getLocationPermission(params) {
-   //    try {
-   //       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, {
-   //          title: 'Location Permission',
-   //          message: 'Please allow Location Permissions to continue...',
-   //          buttonNeutral: 'Ask Me Later',
-   //          buttonNegative: 'Cancel',
-   //          buttonPositive: 'OK',
-   //       });
-   //       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-   //          //   setPermissionGranter(true);
-   //          _getCurrentLocation();
-   //       } else {
-   //          console.log('Camera permission denied');
-   //       }
-   //    } catch (err) {
-   //       console.warn(err);
-   //    }
-   // }
-   // function _getCurrentLocation(params) {
-   //    GetLocation.getCurrentPosition({
-   //       enableHighAccuracy: true,
-   //       timeout: 60000,
-   //    })
-   //       .then((location) => {
-   //          console.log(location);
-   //       })
-   //       .catch((error) => {
-   //          const {code, message} = error;
-   //          console.warn(code, message);
-   //       });
-   // }
-   // const getLocation = () => {
-   //    _getLocationPermission();
-   // };
-   // const apiKey = 'AIzaSyBIzOeC1KdWOR5aCW8TPmKHGfvnFopn33M';
-   // var pos = {
-   //    lat: 40.7809261,
-   //    lng: -73.9637594,
-   // };
-
-   // Geocoder.geocodePosition(pos)
-   //    .then((res) => {
-   //       alert(res[0].formattedAddress);
-   //    })
-   //    .catch((error) => alert(error));
-   // if (!permissionGranter) {
-   //    return (
-   //       <TouchableOpacity onPress={getLocation}>
-   //          <Text>Please allow Location Permissions</Text>
-   //       </TouchableOpacity>
-   //    );
-   // }
-
+      const results = await getWeather(latitude, longtitude);
+      if (results.cod == 200) {
+         console.log('results', results.name);
+         setCity(results.name);
+      }
+   };
+   const handleNavigate = () => {
+      navigation.navigate(LocationScreen);
+   };
+   const handleGetCurrentLocation = () => {
+      getLocation();
+   };
    return (
       <SafeAreaView style={styles.container}>
          <ScrollView>
@@ -125,18 +83,13 @@ const HomeScreen = () => {
                            <Image source={require('../../assets/akar-icons_plus.png')}></Image>
                         </TouchableOpacity>
                      </View>
-                     <Text style={styles.title}>{weatherData?.name}</Text>
+                     <TouchableOpacity onPress={handleGetCurrentLocation}>
+                        <Text style={styles.title}>{weatherData?.name}</Text>
+                     </TouchableOpacity>
                      <View style={{position: 'relative'}}>
-                        <TouchableOpacity onPress={handleOpenPopup}>
+                        <TouchableOpacity>
                            <Image source={require('../../assets/carbon_overflow-menu-vertical.png')}></Image>
                         </TouchableOpacity>
-                        {openPopup && (
-                           <TouchableOpacity onPress={handleNavigateSetting} style={styles.setting}>
-                              <View>
-                                 <Text style={{fontSize: 16}}>Setting</Text>
-                              </View>
-                           </TouchableOpacity>
-                        )}
                      </View>
                   </View>
 
