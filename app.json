@@ -54,7 +54,8 @@
               "minWidth": "300dp",
               "minHeight": "200dp",
               "description": "Something",
-              "previewImage": "./assets/widget-preview/small_weather_preview.png"
+              "previewImage": "./assets/widget-preview/small_weather_preview.png",
+              "updatePeriodMillis": "1800000"
             }
           ]
         }

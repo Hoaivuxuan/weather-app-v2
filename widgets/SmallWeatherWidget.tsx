@@ -5,10 +5,14 @@ import {
   SvgWidget,
   TextWidget,
 } from 'react-native-android-widget';
-
-export function SmallWeatherWidget() {
+import * as Location from "expo-location";
+import { Weather, WeatherForecast } from '../screens/HomeScreen/HomeScreen';
+export function SmallWeatherWidget(weather: Weather) {
+  const days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
+  const dt = new Date(weather.dt)
   return (
     <FlexWidget
+      clickAction="INIT"
       style={{
         backgroundColor: '#ffffff',
         height: 180,
@@ -24,7 +28,7 @@ export function SmallWeatherWidget() {
         }}
       >
         <TextWidget
-          text="Hà Nội"
+          text={weather.name}
           style={{ 
             marginTop: -3,
             fontSize: 20, 
@@ -53,7 +57,7 @@ export function SmallWeatherWidget() {
             }}
           >
             <TextWidget
-              text="20°"
+              text={`${weather.main.temp.toFixed()}°`}
               style={{
                 marginTop: -12,
                 fontSize: 50, 
@@ -71,7 +75,7 @@ export function SmallWeatherWidget() {
             }}
           >
             <TextWidget
-              text="Mưa phùn"
+              text={weather.weather[0].main}
               style={{
                 textAlign: 'center',
                 width: 60,
@@ -81,7 +85,7 @@ export function SmallWeatherWidget() {
               }}
             /> 
             <TextWidget
-              text="~16°"
+              text={`~${weather.main.feels_like.toFixed()}°`}
               style={{
                 fontSize: 16, 
                 color: '#5686DF',
@@ -107,15 +111,15 @@ export function SmallWeatherWidget() {
           </FlexWidget>
           <FlexWidget style={{width: 'match_parent', alignItems:'center', marginTop: 10}}>
             <TextWidget
-              text="Thứ tư"
+              text={days[dt.getDay()]}
               style={{ 
-                fontSize: 15, 
+                fontSize: 16, 
                 color: '#EE5C51',
                 fontWeight: '600',
               }}
             />
             <TextWidget
-              text="22"
+              text={dt.getDate().toString()}
               style={{ 
                 marginTop: -12,
                 fontSize: 50, 

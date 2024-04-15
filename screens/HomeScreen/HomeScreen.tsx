@@ -15,7 +15,7 @@ import LottieView from "lottie-react-native";
 import { StatusBar } from "expo-status-bar";
 import ForecastItem from "./ForecastItem";
 import { getForecast, getWeather } from "../../services/HomeScreenService";
-//
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const BASE_URL = `https://api.openweathermap.org/data/2.5`;
 const OPEN_WEATHER_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_KEY;
 const bgImage =
@@ -32,9 +32,10 @@ type MainWeather = {
   grnd_level: number;
 };
 
-type Weather = {
+export type Weather = {
   name: string;
   main: MainWeather;
+  dt: string;
   weather: [
     {
       id: string;
@@ -74,6 +75,7 @@ export default function HomeScreen() {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      await AsyncStorage.setItem('location', JSON.stringify(location))
     })();
   }, []);
 
@@ -91,6 +93,7 @@ export default function HomeScreen() {
     // const data = await results.json();
     const results = await getWeather(21.0278, 105.8342);
     setWeather(results);
+    await AsyncStorage.setItem('weather', JSON.stringify(results))
   };
 
   const fetchForecast = async () => {
@@ -108,6 +111,7 @@ export default function HomeScreen() {
     // const data = await results.json();
     const results = await getForecast(21.0278, 105.8342);
     setForecast(results);
+    await AsyncStorage.setItem('forecast', JSON.stringify(results))
   };
 
   if (!weather) {
