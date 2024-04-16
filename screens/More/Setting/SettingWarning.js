@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SettingWarningItem from "./SettingWarningItem";
@@ -7,6 +7,7 @@ import DraggableFlatList, {
 } from "react-native-draggable-flatlist";
 import { MeasureData } from "../../../src/common/dataWarn";
 import Footer from "../../Footer";
+import { getItem, setItem } from "../../../src/common/localStorage";
 
 function Item({ text, icon }) {
   const navigation = useNavigation();
@@ -37,7 +38,15 @@ function Item({ text, icon }) {
 
 export default function SettingWarning({ navigation }) {
   const [data, setData] = useState(MeasureData);
-  const renderItem = ({ item, drag, isActive }) => {
+
+  const getStatus = async () => {
+    var value = await getItem("MeasureData");
+    // console.log("value::::", value);
+    setData(value);
+    return value;
+  };
+
+  const renderItem = ({ item, index, drag, isActive }) => {
     return (
       <ScaleDecorator>
         <TouchableOpacity
@@ -50,6 +59,12 @@ export default function SettingWarning({ navigation }) {
       </ScaleDecorator>
     );
   };
+
+  // console.log("item::", data);
+  useEffect(() => {
+    getStatus();
+  }, []);
+
   return (
     <View
       style={{
@@ -85,8 +100,11 @@ export default function SettingWarning({ navigation }) {
         </View>
         <DraggableFlatList
           data={data}
-          onDragEnd={({ data }) => setData(data)}
-          keyExtractor={(item) => item.id}
+          onDragEnd={({ data }) => {
+            setData(data);
+            setItem("MeasureData", data);
+          }}
+          keyExtractor={(item, index) => item.id}
           renderItem={renderItem}
         />
       </View>
