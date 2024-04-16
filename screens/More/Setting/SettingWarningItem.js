@@ -26,9 +26,10 @@ const SettingWarningItem = ({ text, icon }) => {
     <View
       style={{
         margin: 10,
+        cursor: "pointer",
       }}
     >
-      <View style={{ marginLeft: 40 }}>
+      <View style={{ marginLeft: 40, cursor: "pointer" }}>
         <Text
           style={{
             position: "absolute",
