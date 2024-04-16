@@ -21,13 +21,13 @@ const MeasureBadWeather = () => {
   // };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#6390F0" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#0D91F0" }}>
       <View style={{ flex: 1 }}>
         <View
           style={{ justifyContent: "center", alignItems: "center", margin: 25 }}
         >
           <Text style={{ color: "white", fontSize: 20, fontWeight: "600" }}>
-            Biện pháp ứng phó thời tiết xấu.
+            Biện pháp ứng phó thời tiết xấu!
           </Text>
         </View>
         <View style={{ zIndex: 0 }}>

@@ -17,7 +17,7 @@ export default function MeasureCard({ data }) {
       <View
         style={{
           width: "100%",
-          height: 250,
+          height: 200,
           backgroundColor: "white",
           borderRadius: 14,
         }}
