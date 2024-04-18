@@ -1,12 +1,12 @@
 /** @format */
 
 import * as React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Button} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './HomeScreen/HomeScreen';
 import Setting from './More/Setting/Setting';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {MagnifyingGlassIcon} from 'react-native-heroicons/outline';
+import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import MyStack from './MyStack';
 const Tab = createBottomTabNavigator();
 
@@ -21,9 +21,9 @@ const Tab = createBottomTabNavigator();
 export default function BottomTab() {
    return (
       <Tab.Navigator
-         screenOptions={({route}) => ({
+         screenOptions={({ route }) => ({
             headerShown: false,
-            tabBarIcon: ({focused, color, size}) => {
+            tabBarIcon: ({ focused, color, size }) => {
                let iconName;
 
                if (route.name === 'Home') {
@@ -40,11 +40,11 @@ export default function BottomTab() {
       >
          <Tab.Screen
             name='Thời tiết'
-            style={{justifyContent: 'center', alignItems: 'center'}}
+            style={{ justifyContent: 'center', alignItems: 'center' }}
             component={MyStack}
             options={{
                tabBarLabel: 'Trang chủ',
-               tabBarIcon: ({focus}) => {
+               tabBarIcon: ({ focus }) => {
                   <View
                      style={{
                         alignItems: 'center',
@@ -53,7 +53,7 @@ export default function BottomTab() {
                      }}
                   ></View>;
                },
-               tabBarIcon: ({color, size}) => (
+               tabBarIcon: ({ color, size }) => (
                   <Ionicons name='home-outline' size={size} color={color} />
                   // <ion-icon name="home-outline"></ion-icon>
                   // <Icon name="home" color={color} size={size} />
@@ -65,7 +65,7 @@ export default function BottomTab() {
             component={Setting}
             options={{
                tabBarLabel: 'Khác',
-               tabBarIcon: ({color, size}) => <Ionicons name='grid-outline' size={size} color={color} />,
+               tabBarIcon: ({ color, size }) => <Ionicons name='grid-outline' size={size} color={color} />,
             }}
          />
       </Tab.Navigator>

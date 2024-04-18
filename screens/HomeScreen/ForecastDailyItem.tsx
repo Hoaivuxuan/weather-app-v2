@@ -1,10 +1,10 @@
-import { WeatherForecast } from "./HomeScreen";
+// import { WeatherForecast } from "./HomeScreen";
 import { View, Text, StyleSheet } from "react-native";
 import dayjs from "dayjs";
 import { BlurView } from "expo-blur";
 import { Image } from "react-native";
 
-const ForecastDailyItem = ({ forecast }: { forecast: WeatherForecast }) => {
+const ForecastDailyItem = ({ forecast }: { forecast: any }) => {
   return (
     <BlurView intensity={30} style={styles.container}>
       {/* <>{console.log("check forecast:", forecast)}</> */}

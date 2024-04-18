@@ -1,9 +1,9 @@
-import { WeatherForecast } from "./HomeScreen";
+// import { WeatherForecast } from "./HomeScreen";
 import { View, Text, StyleSheet } from "react-native";
 import dayjs from "dayjs";
 import { BlurView } from "expo-blur";
 
-const ForecastItem = ({ forecast }: { forecast: WeatherForecast }) => {
+const ForecastItem = ({ forecast }: { forecast: any }) => {
   return (
     <BlurView intensity={30} style={styles.container}>
       <Text style={styles.temp}>{Math.round(forecast.main.temp)}°</Text>

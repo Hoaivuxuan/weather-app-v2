@@ -1,6 +1,6 @@
 /** @format */
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
    View,
    Text,
@@ -12,13 +12,22 @@ import {
    FlatList,
    ScrollView,
 } from 'react-native';
+import {
+   CalendarDaysIcon,
+   MagnifyingGlassIcon,
+} from "react-native-heroicons/outline";
 const openWeatherKey = '1f996ca44bb1065c2e4accefe9dfb967';
 import * as Location from 'expo-location';
-import {getWeather} from '../../services/HomeScreenService';
+import { getWeather } from '../../services/HomeScreenService';
 import LocationScreen from './LocationScreen';
-const HomeScreen = ({navigation, city = 'London', setCity}) => {
+import { convertDateTo_ddmm, convertDateTo_Week } from '../../services/functions';
+// import moment from 'moment';
+//
+const HomeScreen = ({ navigation, city = 'London', setCity }) => {
    const [weatherData, setWeatherData] = useState({});
    const [forecastData, setForecastData] = useState([]);
+   const [sevenDayForecastData, setSevenDayForecastData] = useState([]);
+   //
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
@@ -32,6 +41,7 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
       };
       fetchWeatherData();
    }, [city]);
+   //
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
@@ -42,6 +52,18 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
       };
       fetchWeatherData();
    }, [city]);
+   //
+   useEffect(() => {
+      const fetchWeatherData = async () => {
+         const response = await fetch(
+            `http://api.weatherapi.com/v1/forecast.json?key=0074e0661b2f49a4a3b24908240604&q=${city}&days=7&aqi=yes&alerts=no`,
+         );
+         const data = await response.json();
+         // console.log("check data:", data.forecast.forecastday)
+         setSevenDayForecastData(data.forecast);
+      };
+      fetchWeatherData();
+   }, [city]);
    let lat = 21.0278;
    let lon = 105.8342;
 
@@ -49,7 +71,7 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
 
    //permission
    const getLocation = async () => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
          return;
       }
@@ -86,7 +108,7 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
                      <TouchableOpacity onPress={handleGetCurrentLocation}>
                         <Text style={styles.title}>{weatherData?.name}</Text>
                      </TouchableOpacity>
-                     <View style={{position: 'relative'}}>
+                     <View style={{ position: 'relative' }}>
                         <TouchableOpacity>
                            <Image source={require('../../assets/carbon_overflow-menu-vertical.png')}></Image>
                         </TouchableOpacity>
@@ -104,9 +126,9 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
                      )}
 
                      <View style={styles.currentDate}>
-                        <Text style={{fontSize: 18, color: '#fff'}}>{dates ? dates[0] : 'Thursday'}</Text>
-                        <Text style={{fontSize: 18, color: '#fff'}}>|</Text>
-                        <Text style={{fontSize: 18, color: '#fff'}}>
+                        <Text style={{ fontSize: 18, color: '#fff' }}>{dates ? dates[0] : 'Thursday'}</Text>
+                        <Text style={{ fontSize: 18, color: '#fff' }}>|</Text>
+                        <Text style={{ fontSize: 18, color: '#fff' }}>
                            {dates ? `${dates[1]} ${dates[2]}` : 'Nov 24'}
                         </Text>
                      </View>
@@ -129,7 +151,7 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
                               <Text style={styles.text}>Wind</Text>
                            </View>
                         </View>
-                        <View style={[styles.info, {left: -5}]}>
+                        <View style={[styles.info, { left: -5 }]}>
                            <Image
                               source={require('../../assets/fluent_weather-rain-24-regular.png')}
                               style={{
@@ -175,9 +197,9 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
 
             <View style={styles.subtitle}>
                <View style={styles.currentDate}>
-                  <Text style={{fontSize: 16, color: '#fff'}}> {dates ? dates[0] : 'Thurs'}</Text>
-                  <Text style={{fontSize: 16, color: '#fff'}}>|</Text>
-                  <Text style={{fontSize: 16, color: '#fff'}}> {dates ? `${dates[1]} ${dates[2]}` : 'Nov 24'}</Text>
+                  <Text style={{ fontSize: 16, color: '#fff' }}> {dates ? dates[0] : 'Thurs'}</Text>
+                  <Text style={{ fontSize: 16, color: '#fff' }}>|</Text>
+                  <Text style={{ fontSize: 16, color: '#fff' }}> {dates ? `${dates[1]} ${dates[2]}` : 'Nov 24'}</Text>
                </View>
                <FlatList
                   horizontal
@@ -204,7 +226,7 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
                                  uri: `http://openweathermap.org/img/wn/${weather?.icon}@4x.png`,
                               }}
                            />
-                           <Text style={{color: '#fff'}}>{Math.round(hour?.item?.main?.temp - 273.15)}°C</Text>
+                           <Text style={{ color: '#fff' }}>{Math.round(hour?.item?.main?.temp - 273.15)}°C</Text>
                            <Text
                               style={{
                                  color: '#fff',
@@ -215,8 +237,43 @@ const HomeScreen = ({navigation, city = 'London', setCity}) => {
                   }}
                ></FlatList>
             </View>
-            <View style={styles.footer}>
-               <Text style={{color: '#0A44E6', fontSize: 20}}>Dự báo 7 ngày</Text>
+            <View className="flex-row items-center m-5 space-x-2">
+               <CalendarDaysIcon size={25} color="black" />
+               <Text className="text-black text-base">Dự báo 7 ngày</Text>
+            </View>
+            <View style={styles.subtitle}>
+               <FlatList
+                  horizontal
+                  data={sevenDayForecastData?.forecastday?.slice(0, 7)}
+                  keyExtractor={(hour, index) => index.toString()}
+                  renderItem={(forecastday) => {
+                     return (
+                        <View style={styles.hour}>
+                           <Text style={{ color: "#fff" }}>
+                              {convertDateTo_Week(forecastday.item.date)}
+                           </Text>
+                           <Text style={{ color: "#fff" }}>
+                              {convertDateTo_ddmm(forecastday.item.date)}
+                           </Text>
+                           <Image
+                              style={styles.smallIcon}
+                              source={{
+                                 uri: `https:${forecastday.item.day.condition.icon}`,
+                              }}
+                           />
+                           <Text style={{ color: "#fff" }}>
+                              Cao nhất: {Math.round(forecastday.item.day.maxtemp_c)}°C
+                           </Text>
+                           <Text style={{ color: "#fff" }}>
+                              Thấp nhất: {Math.round(forecastday.item.day.mintemp_c)}°C
+                           </Text>
+                           <Text style={{ color: "#fff" }}>
+                              Dộ ẩm: {Math.round(forecastday.item.day.avghumidity)}%
+                           </Text>
+                        </View>
+                     );
+                  }}
+               ></FlatList>
             </View>
          </ScrollView>
       </SafeAreaView>
