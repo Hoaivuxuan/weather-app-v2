@@ -1,9 +1,11 @@
 import { View, Text, Switch } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { getItem, setItem } from "../../../src/common/localStorage";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const SettingWarningItem = ({ text, icon }) => {
+  const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = async () => {
     try {

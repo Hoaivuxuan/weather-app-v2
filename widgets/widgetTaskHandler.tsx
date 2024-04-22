@@ -2,14 +2,18 @@ import React from 'react';
 import { requestWidgetUpdate, type WidgetTaskHandlerProps } from 'react-native-android-widget';
 import { ShopifyWidget } from './ShopifyWidget';
 import { SmallWeatherWidget } from './SmallWeatherWidget'
-const nameToWidget = {
-  Shopify: ShopifyWidget,
-  SmallWeather: SmallWeatherWidget
-};
+import { MedWeatherWidget } from './MedWeatherWidget'
 import * as Location from "expo-location";
 import { getForecast, getWeather } from '../services/HomeScreenService';
 import {Weather, WeatherForecast} from '../screens/HomeScreen/HomeScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LargeWeatherWidget } from './LargeWeatherWidget';
+const nameToWidget = {
+  Shopify: ShopifyWidget,
+  SmallWeather: SmallWeatherWidget,
+  MedWeather: MedWeatherWidget,
+  LargeWeather: LargeWeatherWidget
+};
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
   console.log(props);
   const widgetInfo = props.widgetInfo;
@@ -17,7 +21,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
     widgetInfo.widgetName as keyof typeof nameToWidget
   ] as any;
   let weather: Weather
-  let forecast: WeatherForecast
+  let forecast: WeatherForecast[]
   let location: Location.LocationObject
   let status;
   const fetchWeather = async () => {
@@ -37,15 +41,10 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       location = JSON.parse(await AsyncStorage.getItem('location'))
       weather = JSON.parse(await AsyncStorage.getItem('weather'))
       forecast = JSON.parse(await AsyncStorage.getItem('forecast'))
-      console.log(location)
-      console.log(weather)
-      if (widgetInfo.widgetName === 'SmallWeather') {
-        props.renderWidget(<SmallWeatherWidget {...weather}/>);
-      }    
+      props.renderWidget(<Widget {...widgetInfo} weather={weather} forecast={forecast}/>);
       break;
 
     case 'WIDGET_UPDATE': 
-      console.log('hi')
       // await Location.requestForegroundPermissionsAsync();
       // location = await Location.getCurrentPositionAsync({});
       // if (location) {

@@ -41,20 +41,36 @@
           ],
           "widgets": [
             {
-              "name": "Shopify",
-              "label": "Shopify Insights",
-              "minWidth": "300dp",
-              "minHeight": "200dp",
-              "description": "Get quick access to your store's performance",
-              "previewImage": "./assets/widget-preview/shopify_preview.png"
-            },
-            {
               "name": "SmallWeather",
               "label": "Weather Today",
-              "minWidth": "300dp",
-              "minHeight": "200dp",
+              "minWidth": "120dp",
+              "minHeight": "120dp",
+              "targetCellWidth": "2",
+              "targetCellHeight": "2",
               "description": "Something",
               "previewImage": "./assets/widget-preview/small_weather_preview.png",
+              "updatePeriodMillis": "1800000"
+            },
+            {
+              "name": "MedWeather",
+              "label": "Weather Today",
+              "minWidth": "300dp",
+              "minHeight": "120dp",
+              "targetCellWidth": "4",
+              "targetCellHeight": "2",
+              "description": "Something",
+              "previewImage": "./assets/widget-preview/medium_weather_preview.png",
+              "updatePeriodMillis": "1800000"
+            },
+            {
+              "name": "LargeWeather",
+              "label": "Weather Today",
+              "minWidth": "300dp",
+              "minHeight": "250dp",
+              "targetCellWidth": "4",
+              "targetCellHeight": "4",
+              "description": "Something",
+              "previewImage": "./assets/widget-preview/large_weather_preview.png",
               "updatePeriodMillis": "1800000"
             }
           ]
