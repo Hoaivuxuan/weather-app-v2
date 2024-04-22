@@ -16,7 +16,7 @@ import { StatusBar } from "expo-status-bar";
 import ForecastItem from "./ForecastItem";
 import { getForecast, getWeather } from "../../services/HomeScreenService";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PushNotification from "react-native-push-notification";
+
 const BASE_URL = `https://api.openweathermap.org/data/2.5`;
 const OPEN_WEATHER_KEY = process.env.EXPO_PUBLIC_OPEN_WEATHER_KEY;
 const bgImage =
@@ -153,22 +153,6 @@ export default function HomeScreen() {
 
         <TouchableOpacity
           onPress={() => {
-            console.log("before")
-            PushNotification.localNotification({
-              //... You can use all the options from localNotifications
-              title: "SƯƠNG MÙ DÀY ĐẶC",
-              bigText: "Tránh ra ngoài khi không cần thiết, nếu phải sử dụng phương tiện đi lại thì nên: giảm tốc độ khi lái xe, bật đèn pha và ánh sáng gần, sử dụng đèn sương mù(nếu có), giữ khoảng cách an toàn, đeo mặt nạ chống bụi(nếu sương mù đi kèm với bụi)", // (optional) default: "message" prop
-              subText: "Tránh ra ngoài khi không cần thiết", // (optional) default: none
-              channelId: "1",
-              message: "Bây giờ",
-              // bigPictureUrl: "https://i2-prod.hertfordshiremercury.co.uk/news/hertfordshire-news/article942444.ece/ALTERNATES/s1200e/0_3015060.jpg",
-              // date: new Date(Date.now() + 10 * 1000), // in 60 secs
-              allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-              playSound: false,
-              /* Android Only Properties */
-              repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
-            });
-            console.log("after")
             setShowSearch(!showSearch)
           }}
           style={{ backgroundColor: "gray" }}

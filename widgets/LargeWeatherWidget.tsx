@@ -34,7 +34,6 @@ export function LargeWeatherWidget(prop: {weather: Weather, forecast: WeatherFor
   }
   forecast = forecast.slice(0, 5)
   forecast_today = forecast_today.slice(0, 6)
-  console.log(forecast_today)
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const days_full = ['Sunday','Monday','Tueday','Wednesday','Thursday ','Friday','Satuday'];
 

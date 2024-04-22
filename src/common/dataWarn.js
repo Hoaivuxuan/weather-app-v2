@@ -5,13 +5,17 @@ export const MeasureData = [
     description:
       "Dùng quần áo phù hợp, uống nhiều nước, tránh ra ngoài trời trong thời gian nắng nóng, sử dụng mũ che nắng và kem chống nắng nếu phải ra ngoài, tạo môi trường làm việc và ngủ mát mẻ, theo dõi trạng thái sức khỏe",
     nameIcon: "thermometer-outline",
+    message: "Tránh ra ngoài trời trong thời gian nắng nóng",
+    image: "https://www.onmanorama.com/content/dam/mm/en/kerala/top-news/images/2023/3/5/saudi-heat.jpg.transform/845x440/image.jpg"
   },
   {
     id: "02",
     title: "Sương mù dày đặc",
     description:
-      "Trách ra ngoài khi không cần thiết, nếu phải sử dụng phương tiện đi lại thì nên: giảm tốc độ khi lái xe, bật đèn pha và ánh sáng gần, sử dụng đèn sương mù(nếu có), giữ khoảng cách an toàn, đeo mặt nạ chống bụi(nếu sương mù đi kèm với bụi)",
+      "Tránh ra ngoài khi không cần thiết, nếu phải sử dụng phương tiện đi lại thì nên: giảm tốc độ khi lái xe, bật đèn pha và ánh sáng gần, sử dụng đèn sương mù(nếu có), giữ khoảng cách an toàn, đeo mặt nạ chống bụi(nếu sương mù đi kèm với bụi)",
     nameIcon: "cloudy-outline",
+    message: "Tránh ra ngoài khi không cần thiết",
+    image: "https://i2-prod.hertfordshiremercury.co.uk/news/hertfordshire-news/article942444.ece/ALTERNATES/s1200e/0_3015060.jpg"
   },
   {
     id: "03",
