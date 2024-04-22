@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
    View,
    Text,
@@ -11,19 +11,24 @@ import {
    Dimensions,
    FlatList,
    ScrollView,
-} from 'react-native';
+} from "react-native";
 import {
    CalendarDaysIcon,
    MagnifyingGlassIcon,
+   PresentationChartLineIcon,
+   GlobeAltIcon,
 } from "react-native-heroicons/outline";
-const openWeatherKey = '1f996ca44bb1065c2e4accefe9dfb967';
-import * as Location from 'expo-location';
-import { getWeather } from '../../services/HomeScreenService';
-import LocationScreen from './LocationScreen';
-import { convertDateTo_ddmm, convertDateTo_Week } from '../../services/functions';
-// import moment from 'moment';
+const openWeatherKey = "1f996ca44bb1065c2e4accefe9dfb967";
+import * as Location from "expo-location";
+import { getWeather } from "../../services/HomeScreenService";
+import LocationScreen from "./LocationScreen";
+import {
+   convertDateTo_ddmm,
+   convertDateTo_Week,
+} from "../../services/functions";
+const screenWidth = Dimensions.get("window").width;
 //
-const HomeScreen = ({ navigation, city = 'London', setCity }) => {
+const HomeScreen = ({ navigation, city = "London", setCity }) => {
    const [weatherData, setWeatherData] = useState({});
    const [forecastData, setForecastData] = useState([]);
    const [sevenDayForecastData, setSevenDayForecastData] = useState([]);
@@ -31,7 +36,7 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKey}`,
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKey}`
          );
 
          const data = await response.json();
@@ -45,18 +50,18 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${openWeatherKey}`,
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${openWeatherKey}`
          );
          const data = await response.json();
          setForecastData(data.list);
       };
       fetchWeatherData();
    }, [city]);
-   //
+   // 7 days weather forecast
    useEffect(() => {
       const fetchWeatherData = async () => {
          const response = await fetch(
-            `http://api.weatherapi.com/v1/forecast.json?key=0074e0661b2f49a4a3b24908240604&q=${city}&days=7&aqi=yes&alerts=no`,
+            `http://api.weatherapi.com/v1/forecast.json?key=66e634cbdc23407fadb05355242204&q=${city}&days=7&aqi=yes&alerts=no`
          );
          const data = await response.json();
          // console.log("check data:", data.forecast.forecastday)
@@ -67,33 +72,48 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
    let lat = 21.0278;
    let lon = 105.8342;
 
-   const dates = Date().split(' ');
+   const dates = Date().split(" ");
 
    //permission
    const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      if (status !== "granted") {
          return;
       }
       let location = await Location.getCurrentPositionAsync({});
       // console.log('location', location);
       const latitude = lat;
       const longtitude = lon;
-      console.log('latitude', latitude);
-      console.log('longtitude', longtitude);
+      console.log("latitude", latitude);
+      console.log("longtitude", longtitude);
 
       const results = await getWeather(latitude, longtitude);
       if (results.cod == 200) {
-         console.log('results', results.name);
+         console.log("results", results.name);
          setCity(results.name);
       }
    };
+
    const handleNavigate = () => {
       navigation.navigate(LocationScreen);
    };
+
    const handleGetCurrentLocation = () => {
       getLocation();
    };
+
+   const data = {
+      labels: ["January", "February", "March", "April", "May", "June"],
+      datasets: [
+         {
+            data: [20, 45, 28, 80, 99, 43],
+            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+            strokeWidth: 2, // optional
+         },
+      ],
+      legend: ["Rainy Days"], // optional
+   };
+
    return (
       <SafeAreaView style={styles.container}>
          <ScrollView>
@@ -102,15 +122,19 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
                   <View style={styles.header}>
                      <View>
                         <TouchableOpacity onPress={handleNavigate}>
-                           <Image source={require('../../assets/akar-icons_plus.png')}></Image>
+                           <Image
+                              source={require("../../assets/akar-icons_plus.png")}
+                           ></Image>
                         </TouchableOpacity>
                      </View>
                      <TouchableOpacity onPress={handleGetCurrentLocation}>
                         <Text style={styles.title}>{weatherData?.name}</Text>
                      </TouchableOpacity>
-                     <View style={{ position: 'relative' }}>
+                     <View style={{ position: "relative" }}>
                         <TouchableOpacity>
-                           <Image source={require('../../assets/carbon_overflow-menu-vertical.png')}></Image>
+                           <Image
+                              source={require("../../assets/carbon_overflow-menu-vertical.png")}
+                           ></Image>
                         </TouchableOpacity>
                      </View>
                   </View>
@@ -126,67 +150,81 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
                      )}
 
                      <View style={styles.currentDate}>
-                        <Text style={{ fontSize: 18, color: '#fff' }}>{dates ? dates[0] : 'Thursday'}</Text>
-                        <Text style={{ fontSize: 18, color: '#fff' }}>|</Text>
-                        <Text style={{ fontSize: 18, color: '#fff' }}>
-                           {dates ? `${dates[1]} ${dates[2]}` : 'Nov 24'}
+                        <Text style={{ fontSize: 18, color: "#fff" }}>
+                           {dates ? dates[0] : "Thursday"}
+                        </Text>
+                        <Text style={{ fontSize: 18, color: "#fff" }}>|</Text>
+                        <Text style={{ fontSize: 18, color: "#fff" }}>
+                           {dates ? `${dates[1]} ${dates[2]}` : "Nov 24"}
                         </Text>
                      </View>
-                     <Text style={styles.currentTemp}>{Math.round(weatherData?.main?.temp - 273.15)}</Text>
+                     <Text style={styles.currentTemp}>
+                        {Math.round(weatherData?.main?.temp - 273.15)}
+                     </Text>
                      <Text style={styles.currentDesc}>
-                        {Array.isArray(weatherData.weather) ? weatherData?.weather[0]?.description : ''}
+                        {Array.isArray(weatherData.weather)
+                           ? weatherData?.weather[0]?.description
+                           : ""}
                      </Text>
                      <View style={styles.dash}></View>
                      <View style={styles.extraInfo}>
                         <View style={styles.info}>
                            <Image
-                              source={require('../../assets/carbon_location-current.png')}
+                              source={require("../../assets/carbon_location-current.png")}
                               style={{
                                  width: 30,
                                  height: 30,
                               }}
                            ></Image>
                            <View>
-                              <Text style={styles.text}>{`${weatherData?.wind?.speed}km/h`}</Text>
+                              <Text
+                                 style={styles.text}
+                              >{`${weatherData?.wind?.speed}km/h`}</Text>
                               <Text style={styles.text}>Wind</Text>
                            </View>
                         </View>
                         <View style={[styles.info, { left: -5 }]}>
                            <Image
-                              source={require('../../assets/fluent_weather-rain-24-regular.png')}
+                              source={require("../../assets/fluent_weather-rain-24-regular.png")}
                               style={{
                                  width: 30,
                                  height: 30,
                               }}
                            ></Image>
                            <View>
-                              <Text style={styles.text}>{`${weatherData?.chance_of_rain} %`}</Text>
+                              <Text
+                                 style={styles.text}
+                              >{`${weatherData?.chance_of_rain} %`}</Text>
                               <Text style={styles.text}>Rain</Text>
                            </View>
                         </View>
                         <View style={styles.info}>
                            <Image
-                              source={require('../../assets/fluent_temperature-24-regular.png')}
+                              source={require("../../assets/fluent_temperature-24-regular.png")}
                               style={{
                                  width: 30,
                                  height: 30,
                               }}
                            ></Image>
                            <View>
-                              <Text style={styles.text}>{`${weatherData?.main?.pressure} mbar`}</Text>
+                              <Text
+                                 style={styles.text}
+                              >{`${weatherData?.main?.pressure} mbar`}</Text>
                               <Text style={styles.text}>Pressure</Text>
                            </View>
                         </View>
                         <View style={styles.info}>
                            <Image
-                              source={require('../../assets/ion_water-outline.png')}
+                              source={require("../../assets/ion_water-outline.png")}
                               style={{
                                  width: 30,
                                  height: 30,
                               }}
                            ></Image>
                            <View>
-                              <Text style={styles.text}>{`${weatherData?.main?.humidity} %`}</Text>
+                              <Text
+                                 style={styles.text}
+                              >{`${weatherData?.main?.humidity} %`}</Text>
                               <Text style={styles.text}>Humidity</Text>
                            </View>
                         </View>
@@ -197,9 +235,15 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
 
             <View style={styles.subtitle}>
                <View style={styles.currentDate}>
-                  <Text style={{ fontSize: 16, color: '#fff' }}> {dates ? dates[0] : 'Thurs'}</Text>
-                  <Text style={{ fontSize: 16, color: '#fff' }}>|</Text>
-                  <Text style={{ fontSize: 16, color: '#fff' }}> {dates ? `${dates[1]} ${dates[2]}` : 'Nov 24'}</Text>
+                  <Text style={{ fontSize: 16, color: "#fff" }}>
+                     {" "}
+                     {dates ? dates[0] : "Thurs"}
+                  </Text>
+                  <Text style={{ fontSize: 16, color: "#fff" }}>|</Text>
+                  <Text style={{ fontSize: 16, color: "#fff" }}>
+                     {" "}
+                     {dates ? `${dates[1]} ${dates[2]}` : "Nov 24"}
+                  </Text>
                </View>
                <FlatList
                   horizontal
@@ -207,14 +251,14 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
                   keyExtractor={(hour, index) => index.toString()}
                   renderItem={(hour) => {
                      const weather = hour.item.weather[0];
-                     const dt_txt = hour.item.dt_txt.split(' ')[1].substring(0, 5);
+                     const dt_txt = hour.item.dt_txt.split(" ")[1].substring(0, 5);
                      return (
                         <View style={styles.hour}>
                            <Text
                               style={{
-                                 color: '#fff',
+                                 color: "#fff",
                                  marginBottom: 5,
-                                 fontWeight: 'bold',
+                                 fontWeight: "bold",
                               }}
                            >
                               {dt_txt}
@@ -226,10 +270,12 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
                                  uri: `http://openweathermap.org/img/wn/${weather?.icon}@4x.png`,
                               }}
                            />
-                           <Text style={{ color: '#fff' }}>{Math.round(hour?.item?.main?.temp - 273.15)}°C</Text>
+                           <Text style={{ color: "#fff" }}>
+                              {Math.round(hour?.item?.main?.temp - 273.15)}°C
+                           </Text>
                            <Text
                               style={{
-                                 color: '#fff',
+                                 color: "#fff",
                               }}
                            >{`${hour?.item?.main?.humidity}% humidity`}</Text>
                         </View>
@@ -275,6 +321,24 @@ const HomeScreen = ({ navigation, city = 'London', setCity }) => {
                   }}
                ></FlatList>
             </View>
+            <View className="flex-row items-center m-5 space-x-2">
+               <PresentationChartLineIcon size={25} color="black" />
+               <Text className="text-black text-base">Biểu đồ dự báo nhiệt độ</Text>
+            </View>
+            <View className="flex-row items-center m-5 space-x-2">
+               <PresentationChartLineIcon size={25} color="black" />
+               <Text className="text-black text-base">Biểu đồ dự báo lượng mưa</Text>
+            </View>
+            <View className="flex-row items-center m-5 space-x-2">
+               <PresentationChartLineIcon size={25} color="black" />
+               <Text className="text-black text-base">Biểu đồ dự báo chỉ số UV</Text>
+            </View>
+            <View className="flex-row items-center m-5 space-x-2">
+               <GlobeAltIcon size={25} color="black" />
+               <Text className="text-black text-base">
+                  Thông tin về mặt trời và mặt trăng
+               </Text>
+            </View>
          </ScrollView>
       </SafeAreaView>
    );
@@ -284,41 +348,41 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
    container: {
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
       marginTop: 60,
    },
    current_wrap: {
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
       padding: 15,
    },
    current_container: {
-      backgroundColor: '#62B8F6',
+      backgroundColor: "#62B8F6",
       borderRadius: 30,
       padding: 10,
    },
    currentDate: {
-      flexDirection: 'row',
+      flexDirection: "row",
       gap: 10,
-      color: '#fff',
+      color: "#fff",
    },
    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
    },
    title: {
-      textAlign: 'center',
+      textAlign: "center",
       fontSize: 26,
-      fontWeight: 'bold',
-      color: '#fff',
+      fontWeight: "bold",
+      color: "#fff",
    },
    title_location: {
-      textAlign: 'center',
-      alignItems: 'center',
+      textAlign: "center",
+      alignItems: "center",
    },
    current: {
-      flexDirection: 'col',
-      alignItems: 'center',
+      flexDirection: "col",
+      alignItems: "center",
    },
    large_icon: {
       width: 200,
@@ -326,53 +390,53 @@ const styles = StyleSheet.create({
    },
    currentTemp: {
       fontSize: 46,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      color: '#fff',
+      fontWeight: "bold",
+      textAlign: "center",
+      color: "#fff",
    },
    currentDesc: {
-      width: '100%',
-      textAlign: 'center',
-      fontWeight: '200',
+      width: "100%",
+      textAlign: "center",
+      fontWeight: "200",
       fontSize: 18,
       marginBottom: 5,
-      color: '#fff',
+      color: "#fff",
    },
    extraInfo: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "space-between",
       paddingTop: 7,
    },
 
    info: {
-      width: Dimensions.get('screen').width / 2.5,
+      width: Dimensions.get("screen").width / 2.5,
       padding: 5,
       borderRadius: 15,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-around',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-around",
       paddingLeft: 30,
       paddingRight: 30,
    },
    text: {
       fontSize: 14,
-      color: '#fff',
-      textAlign: 'center',
+      color: "#fff",
+      textAlign: "center",
    },
    subtitle: {
-      backgroundColor: '#62B8F6',
+      backgroundColor: "#62B8F6",
       fontSize: 24,
-      color: '#c84b31',
-      fontWeight: 'bold',
-      width: '100%',
+      color: "#c84b31",
+      fontWeight: "bold",
+      width: "100%",
       paddingLeft: 10,
       paddingTop: 10,
    },
    hour: {
       padding: 20,
-      alignItems: 'center',
+      alignItems: "center",
    },
    smallIcon: {
       width: 50,
@@ -380,25 +444,25 @@ const styles = StyleSheet.create({
    },
 
    dash: {
-      width: '100%',
+      width: "100%",
       height: 1,
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
       marginTop: 5,
    },
    footer: {
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
 
       padding: 20,
    },
    setting: {
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
       padding: 10,
-      position: 'absolute',
+      position: "absolute",
       width: 100,
       right: 0,
       borderTopRightRadius: 20,
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
    },
 });
