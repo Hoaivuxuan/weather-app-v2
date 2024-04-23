@@ -13,6 +13,14 @@ import {
    ScrollView,
 } from "react-native";
 import {
+   LineChart,
+   BarChart,
+   PieChart,
+   ProgressChart,
+   ContributionGraph,
+   StackedBarChart
+} from "react-native-chart-kit";
+import {
    CalendarDaysIcon,
    MagnifyingGlassIcon,
    PresentationChartLineIcon,
@@ -27,6 +35,16 @@ import {
    convertDateTo_Week,
 } from "../../services/functions";
 const screenWidth = Dimensions.get("window").width;
+const chartConfig = {
+   backgroundGradientFrom: "#1E2923",
+   backgroundGradientFromOpacity: 0,
+   backgroundGradientTo: "#08130D",
+   backgroundGradientToOpacity: 0,
+   color: (opacity = 1) => `black`,
+   strokeWidth: 2,
+   barPercentage: 0.5,
+   useShadowColorFromDataset: false
+};
 //
 const HomeScreen = ({ navigation, city = "London", setCity }) => {
    const [weatherData, setWeatherData] = useState({});
@@ -103,15 +121,20 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
    };
 
    const data = {
-      labels: ["January", "February", "March", "April", "May", "June"],
+      labels: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)),
       datasets: [
          {
-            data: [20, 45, 28, 80, 99, 43],
-            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-            strokeWidth: 2, // optional
+            data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.mintemp_c),
+            color: (opacity = 1) => `blue`,
+            strokeWidth: 2,
+         },
+         {
+            data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.maxtemp_c),
+            color: (opacity = 1) => `orange`,
+            strokeWidth: 2,
          },
       ],
-      legend: ["Rainy Days"], // optional
+      legend: ["Nhiệt độ thấp nhất", "Nhiệt độ cao nhất"],
    };
 
    return (
@@ -287,6 +310,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
                <CalendarDaysIcon size={25} color="black" />
                <Text className="text-black text-base">Dự báo 7 ngày</Text>
             </View>
+            {console.log("check data:", sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)))}
             <View style={styles.subtitle}>
                <FlatList
                   horizontal
@@ -294,6 +318,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
                   keyExtractor={(hour, index) => index.toString()}
                   renderItem={(forecastday) => {
                      return (
+
                         <View style={styles.hour}>
                            <Text style={{ color: "#fff" }}>
                               {convertDateTo_Week(forecastday.item.date)}
@@ -324,6 +349,15 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
             <View className="flex-row items-center m-5 space-x-2">
                <PresentationChartLineIcon size={25} color="black" />
                <Text className="text-black text-base">Biểu đồ dự báo nhiệt độ</Text>
+            </View>
+            <View>
+               <LineChart
+                  data={data}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  bezier
+               />
             </View>
             <View className="flex-row items-center m-5 space-x-2">
                <PresentationChartLineIcon size={25} color="black" />

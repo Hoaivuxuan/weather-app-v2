@@ -9,15 +9,7 @@ export const convertDateTo_ddmm = (dateString) => {
 //
 export const convertDateTo_Week = (dateString) => {
   const date = new Date(dateString);
-  const daysOfWeek = [
-    "Chủ nhật",
-    "Thứ hai",
-    "Thứ ba",
-    "Thứ tư",
-    "Thứ năm",
-    "Thứ sáu",
-    "Thứ bảy",
-  ];
+  const daysOfWeek = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
   const dayIndex = date.getDay();
   return daysOfWeek[dayIndex];
 };
