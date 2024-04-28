@@ -82,7 +82,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
             `http://api.weatherapi.com/v1/forecast.json?key=66e634cbdc23407fadb05355242204&q=${city}&days=7&aqi=yes&alerts=no`
          );
          const data = await response.json();
-         // console.log("check data:", data.forecast.forecastday)
+         console.log("check data test:", data.forecast.forecastday)
          setSevenDayForecastData(data.forecast);
       };
       fetchWeatherData();
@@ -120,21 +120,50 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
       getLocation();
    };
 
-   const data = {
+   const dataTemp = {
       labels: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)),
       datasets: [
          {
             data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.mintemp_c),
-            color: (opacity = 1) => `blue`,
+            color: (opacity = 1) => `green`,
+            strokeWidth: 2,
+         },
+         {
+            data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.avgtemp_c),
+            color: (opacity = 1) => `orange`,
             strokeWidth: 2,
          },
          {
             data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.maxtemp_c),
-            color: (opacity = 1) => `orange`,
+            color: (opacity = 1) => `red`,
             strokeWidth: 2,
          },
       ],
-      legend: ["Nhiệt độ thấp nhất", "Nhiệt độ cao nhất"],
+      legend: ["Thấp nhất", "Trung bình", "Cao nhất"],
+   };
+
+   const dataPrecip = {
+      labels: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)),
+      datasets: [
+         {
+            data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.totalprecip_mm),
+            color: (opacity = 1) => `blue`,
+            strokeWidth: 2,
+         }
+      ],
+      legend: ["Lượng mưa(mm)"],
+   };
+
+   const dataUV = {
+      labels: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)),
+      datasets: [
+         {
+            data: sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => item.day.uv),
+            color: (opacity = 1) => `purple`,
+            strokeWidth: 2,
+         }
+      ],
+      legend: ["Chỉ số tia UV"],
    };
 
    return (
@@ -310,7 +339,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
                <CalendarDaysIcon size={25} color="black" />
                <Text className="text-black text-base">Dự báo 7 ngày</Text>
             </View>
-            {console.log("check data:", sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)))}
+            {/* {console.log("check data:", sevenDayForecastData?.forecastday?.slice(0, 7).map((item) => convertDateTo_Week(item.date)))} */}
             <View style={styles.subtitle}>
                <FlatList
                   horizontal
@@ -351,21 +380,51 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
                <Text className="text-black text-base">Biểu đồ dự báo nhiệt độ</Text>
             </View>
             <View>
-               <LineChart
-                  data={data}
-                  width={screenWidth}
-                  height={220}
-                  chartConfig={chartConfig}
-                  bezier
-               />
+               {sevenDayForecastData && sevenDayForecastData.forecastday && sevenDayForecastData.forecastday.length > 0 ? (
+                  <LineChart
+                     data={dataTemp}
+                     width={screenWidth}
+                     height={220}
+                     chartConfig={chartConfig}
+                     bezier
+                  />
+               ) : (
+                  <Text>No forecast data available</Text>
+               )}
             </View>
             <View className="flex-row items-center m-5 space-x-2">
                <PresentationChartLineIcon size={25} color="black" />
                <Text className="text-black text-base">Biểu đồ dự báo lượng mưa</Text>
             </View>
+            <View>
+               {sevenDayForecastData && sevenDayForecastData.forecastday && sevenDayForecastData.forecastday.length > 0 ? (
+                  <LineChart
+                     data={dataPrecip}
+                     width={screenWidth}
+                     height={220}
+                     chartConfig={chartConfig}
+                     bezier
+                  />
+               ) : (
+                  <Text>No forecast data available</Text>
+               )}
+            </View>
             <View className="flex-row items-center m-5 space-x-2">
                <PresentationChartLineIcon size={25} color="black" />
                <Text className="text-black text-base">Biểu đồ dự báo chỉ số UV</Text>
+            </View>
+            <View>
+               {sevenDayForecastData && sevenDayForecastData.forecastday && sevenDayForecastData.forecastday.length > 0 ? (
+                  <LineChart
+                     data={dataUV}
+                     width={screenWidth}
+                     height={220}
+                     chartConfig={chartConfig}
+                     bezier
+                  />
+               ) : (
+                  <Text>No forecast data available</Text>
+               )}
             </View>
             <View className="flex-row items-center m-5 space-x-2">
                <GlobeAltIcon size={25} color="black" />
