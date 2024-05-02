@@ -468,7 +468,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
             <Image
-              source={require("../../assets/sun.webp")}
+              source={require("../../assets/sun1.jpg")}
               style={{ width: 100, height: 100 }}
             ></Image>
           </View>
@@ -519,7 +519,9 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
               <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                 Mặt trăng lặn
               </Text>
-              <Text style={{ fontSize: 20 }}>18:22</Text>
+              <Text style={{ fontSize: 20 }}>
+                {currentForecastData?.moonset}
+              </Text>
             </View>
           </View>
           <View style={styles.rowType}>
