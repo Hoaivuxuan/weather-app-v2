@@ -57,6 +57,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
   const [currentForecastData, setCurrentForecastData] = useState();
   const [toolTipVisible, setToolTipVisible] = useState(false);
   const [toolTipVisibleRain, setToolTipVisibleRain] = useState(false);
+  const [toolTipVisibleTemp, setToolTipVisibleTemp] = useState(false);
   //
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -411,6 +412,32 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
         <View className="flex-row items-center m-5 space-x-2">
           <PresentationChartLineIcon size={25} color="black" />
           <Text className="text-black text-base">Biểu đồ dự báo nhiệt độ</Text>
+          <TouchableOpacity onPress={() => setToolTipVisibleTemp(true)}>
+            <ExclamationCircleIcon size={25} color="red" />
+          </TouchableOpacity>
+          <Tooltip
+            isVisible={toolTipVisibleTemp}
+            content={
+              <View>
+                <Text>
+                  Nhiệt độ thấp (dưới 20°C): Nhiệt độ thấp có thể gây cảm lạnh,
+                  cảm cúm, đau cơ, và nếu không ăn mặc ấm áp, có thể dẫn đến
+                  viêm họng, viêm phổi và các vấn đề về hệ thống hô hấp.
+                </Text>
+                <Text>
+                  Nhiệt độ trung bình (20°C - 35°C): Nhiệt độ trung bình thích
+                  hợp cho nhiều hoạt động ngoài trời và sinh hoạt hàng ngày{" "}
+                </Text>
+                <Text>
+                  Nhiệt độ cao (trên 35°C): Nhiệt độ cao có thể gây ra các vấn
+                  đề về sức khỏe như say nắng, đột quỵ, mệt mỏi, và rủi ro về
+                  việc đốt cháy nếu không có biện pháp bảo vệ phù hợp.
+                </Text>
+              </View>
+            }
+            placement="top"
+            onClose={() => setToolTipVisibleTemp(false)}
+          ></Tooltip>
         </View>
         <View>
           {sevenDayForecastData &&
