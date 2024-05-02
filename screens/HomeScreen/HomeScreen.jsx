@@ -11,6 +11,7 @@ import {
   Dimensions,
   FlatList,
   ScrollView,
+  TouchableHighlight,
 } from "react-native";
 import {
   LineChart,
@@ -25,6 +26,7 @@ import {
   MagnifyingGlassIcon,
   PresentationChartLineIcon,
   GlobeAltIcon,
+  ExclamationCircleIcon,
 } from "react-native-heroicons/outline";
 const openWeatherKey = "1f996ca44bb1065c2e4accefe9dfb967";
 import * as Location from "expo-location";
@@ -34,6 +36,8 @@ import {
   convertDateTo_ddmm,
   convertDateTo_Week,
 } from "../../services/functions";
+import Tooltip from "react-native-walkthrough-tooltip";
+//
 const screenWidth = Dimensions.get("window").width;
 const chartConfig = {
   backgroundGradientFrom: "#1E2923",
@@ -51,6 +55,8 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
   const [forecastData, setForecastData] = useState([]);
   const [sevenDayForecastData, setSevenDayForecastData] = useState([]);
   const [currentForecastData, setCurrentForecastData] = useState();
+  const [toolTipVisible, setToolTipVisible] = useState(false);
+  const [toolTipVisibleRain, setToolTipVisibleRain] = useState(false);
   //
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -83,7 +89,7 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
         `http://api.weatherapi.com/v1/forecast.json?key=66e634cbdc23407fadb05355242204&q=${city}&days=7&aqi=yes&alerts=no`
       );
       const data = await response.json();
-      console.log("check data test:", data.forecast.forecastday[0].astro);
+      console.log("check astro:", data.forecast.forecastday[0].astro);
       setCurrentForecastData(data.forecast.forecastday[0].astro);
       setSevenDayForecastData(data.forecast);
     };
@@ -424,6 +430,42 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
         <View className="flex-row items-center m-5 space-x-2">
           <PresentationChartLineIcon size={25} color="black" />
           <Text className="text-black text-base">Biểu đồ dự báo lượng mưa</Text>
+          <TouchableOpacity onPress={() => setToolTipVisibleRain(true)}>
+            <ExclamationCircleIcon size={25} color="red" />
+          </TouchableOpacity>
+          <Tooltip
+            isVisible={toolTipVisibleRain}
+            content={
+              <View>
+                <Text>
+                  - Mưa nhỏ, lượng mưa không đáng kể: lượng mưa nhỏ hơn 0,3
+                  mm/12 giờ.
+                </Text>
+                <Text>
+                  - Mưa nhỏ: lượng mưa nhỏ hơn 3.0mm/12 giờ hoặc nhỏ hơn
+                  6.0mm/24 giờ.
+                </Text>
+                <Text>
+                  - Mưa: lượng mưa từ 3.0mm đến dưới 8.0mm/12giờ hoặc
+                  6.0-15.0mm/24 giờ.
+                </Text>
+                <Text>
+                  - Mưa vừa: lượng mưa từ 8.0-25.0mm/12giờ hoặc khoảng 16.0-
+                  50.0mm/24giờ.
+                </Text>
+                <Text>
+                  - Mưa to: lượng mưa từ 25.0-50.0mm/12giờ hoặc
+                  51.0-100.0mm/24giờ.
+                </Text>
+                <Text>
+                  - Mưa rất to: lượng mưa trên 50.0mm/12 giờ hoặc trên
+                  100.0mm/24 giờ.
+                </Text>
+              </View>
+            }
+            placement="top"
+            onClose={() => setToolTipVisibleRain(false)}
+          ></Tooltip>
         </View>
         <View>
           {sevenDayForecastData &&
@@ -443,6 +485,47 @@ const HomeScreen = ({ navigation, city = "London", setCity }) => {
         <View className="flex-row items-center m-5 space-x-2">
           <PresentationChartLineIcon size={25} color="black" />
           <Text className="text-black text-base">Biểu đồ dự báo chỉ số UV</Text>
+          <TouchableOpacity onPress={() => setToolTipVisible(true)}>
+            <ExclamationCircleIcon size={25} color="red" />
+          </TouchableOpacity>
+          <Tooltip
+            isVisible={toolTipVisible}
+            content={
+              <View>
+                <Text>
+                  Chỉ số UV thường được đo trên một thang đo phổ quát từ 0 đến
+                  11+, với các mức độ sau:
+                </Text>
+                <Text>
+                  0-2: Mức độ UV ở mức rất thấp đến thấp. Đây là thời điểm an
+                  toàn nhất để tiếp xúc với ánh nắng mặt trời.
+                </Text>
+                <Text>
+                  3-5: Mức độ UV ở mức trung bình. Cần cẩn trọng khi tiếp xúc
+                  với ánh nắng mặt trời trong thời gian dài và cần sử dụng kem
+                  chống nắng.
+                </Text>
+                <Text>
+                  6-7: Mức độ UV ở mức cao. Cần hạn chế thời gian tiếp xúc với
+                  ánh nắng mặt trời và sử dụng kem chống nắng, đặc biệt là vào
+                  giữa trưa.
+                </Text>
+                <Text>
+                  8-10: Mức độ UV ở mức rất cao. Cần tránh tiếp xúc với ánh nắng
+                  mặt trời vào giữa trưa và sử dụng kem chống nắng, kính râm, và
+                  áo che mặt khi ra ngoài.
+                </Text>
+                <Text>
+                  11+: Mức độ UV ở mức cực cao. Tiếp xúc với ánh nắng mặt trời
+                  cần được tránh vào giữa trưa và cần sử dụng các biện pháp bảo
+                  vệ mạnh mẽ như kem chống nắng, kính râm, áo che mặt và tránh
+                  tiếp xúc trực tiếp với ánh nắng mặt trời.
+                </Text>
+              </View>
+            }
+            placement="top"
+            onClose={() => setToolTipVisible(false)}
+          ></Tooltip>
         </View>
         <View>
           {sevenDayForecastData &&
